@@ -1,0 +1,1961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>麋鹿心理测试平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f5ff 0%, #e6ecff 100%);
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 深蓝色主题色定义 - 基于图片中的颜色 */
+        :root {
+            --primary-blue: #1a4b8c;
+            --dark-blue: #0a2b5a;
+            --light-blue: #5a8fd8;
+            --light-blue-bg: #c6d8f0;
+            --pale-blue: #e8f0ff;
+        }
+
+        /* 背景装饰元素 */
+        .bg-deco {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(26, 75, 140, 0.05);
+        }
+
+        .deco-circle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .deco-circle:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .deco-circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 50%;
+            left: 10%;
+        }
+
+        /* 头部区域 */
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(10, 43, 90, 0.2);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        /* 主要内容区域 */
+        .main-container {
+            max-width: 1200px;
+            margin: -50px auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 主测试卡片 */
+        .main-test-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            text-align: center;
+            border: 1px solid rgba(26, 75, 140, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-test-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+        }
+
+        .test-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 20px rgba(26, 75, 140, 0.3);
+        }
+
+        .test-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .test-description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .test-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.95rem;
+        }
+
+        .start-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(26, 75, 140, 0.3);
+        }
+
+        .start-btn:hover {
+            background: linear-gradient(135deg, #153a70, #091f42);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(26, 75, 140, 0.4);
+        }
+
+        /* 特性展示 - 时间线样式 */
+        .timeline-section {
+            position: relative;
+            margin: 4rem 0;
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 3px;
+        }
+
+        .timeline-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--dark-blue));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(26, 75, 140, 0.2);
+            border: 3px solid var(--primary-blue);
+            z-index: 10;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            margin: 0 2rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            text-align: right;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+        }
+
+        .timeline-description {
+            color: #4a5568;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        /* 底部区域 - 缩小版 */
+        .main-footer {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            opacity: 0.9;
+        }
+
+        .footer-description {
+            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto 1rem;
+            line-height: 1.5;
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .footer-link:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* 测试页面样式 - 已优化，改为主题色 */
+        .test-header {
+            width: 100vw;
+            background: var(--primary-blue);
+            color: white;
+            padding: 0 0 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(26, 75, 140, 0.2);
+        }
+
+        .test-header-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            line-height: 48px;
+        }
+
+        .test-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 32px 28px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            border: 1px solid rgba(26, 75, 140, 0.2);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: #f0f2f5;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-blue), var(--dark-blue));
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .question-info {
+            color: var(--primary-blue);
+            font-size: 1em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .question-title {
+            font-size: 1.25em;
+            font-weight: bold;
+            margin-bottom: 24px;
+            color: #2d3748;
+            line-height: 1.6;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .option-card {
+            background: #f8fafc;
+            border: 2px solid #e3e8f0;
+            border-radius: 12px;
+            padding: 18px 16px;
+            font-size: 1.08em;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .option-card:hover {
+            border-color: var(--light-blue);
+            background: #f0f5ff;
+        }
+
+        .option-card.selected {
+            border: 2px solid var(--primary-blue);
+            background: #f0f5ff;
+            color: var(--dark-blue);
+            box-shadow: 0 4px 12px rgba(26, 75, 140, 0.15);
+        }
+
+        .option-radio {
+            margin-right: 16px;
+            accent-color: var(--primary-blue);
+            width: 18px;
+            height: 18px;
+        }
+
+        .test-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 12px 0;
+            border-radius: 8px;
+            border: none;
+            font-size: 1.05em;
+            background: #f0f2f8;
+            color: #7b8ba3;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .nav-btn:disabled {
+            background: #f5f6fa;
+            color: #c0c6d4;
+            cursor: not-allowed;
+        }
+
+        .nav-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+        }
+
+        .main-btn:disabled {
+            background: #c6d8f0;
+            color: white;
+        }
+
+        /* 结果页面样式 - 修正文字颜色 */
+        .result-wrap {
+            max-width: 980px;
+            margin: 24px auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            border: 1px solid rgba(26, 75, 140, 0.2);
+        }
+
+        .result-title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 8px 0 6px 0;
+            color: var(--dark-blue);
+        }
+
+        .result-hr {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
+            margin: 12px 0 24px 0;
+            border: none;
+        }
+
+        .result-section-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--primary-blue);
+            margin: 8px 0 18px 0;
+        }
+
+        .result-panel {
+            background: #f9fbfd;
+            border: 1px solid rgba(26, 75, 140, 0.3);
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 24px;
+        }
+
+        .radar-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+        }
+
+        canvas {
+            width: 720px;
+            height: 520px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .legend {
+            text-align: center;
+            color: #666;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .analysis-wrap {
+            margin-top: 24px;
+        }
+
+        .analysis-card {
+            border-radius: 12px;
+            border: 1px solid rgba(26, 75, 140, 0.2);
+            background: #f9fbfd;
+            margin: 18px 0;
+            padding: 20px 18px;
+            transition: all 0.3s;
+        }
+
+        .analysis-card:hover {
+            box-shadow: 0 6px 16px rgba(26, 75, 140, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .analysis-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: var(--dark-blue);
+        }
+
+        .score {
+            color: var(--primary-blue);
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        .para {
+            color: #333;
+            line-height: 1.8;
+            margin: 12px 0 0 0;
+            font-size: 15px;
+        }
+
+        .note {
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+            padding: 8px 0;
+            border-top: 1px dashed rgba(26, 75, 140, 0.2);
+            font-size: 14px;
+        }
+
+        .back-btn {
+            display: block;
+            width: 180px;
+            margin: 24px auto;
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 75, 140, 0.3);
+        }
+
+        /* 页面切换 */
+        .page {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f5ff 0%, #e6ecff 100%);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* 兑换码弹窗样式 - 基于新建文本文档，已改为主题色 */
+        .code-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+            padding: 15px;
+        }
+
+        .code-modal.active {
+            display: flex;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            border: 2px solid var(--primary-blue);
+            animation: modalSlideUp 0.3s ease;
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: var(--primary-blue);
+            transition: all 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .modal-close:hover {
+            color: var(--dark-blue);
+            background-color: rgba(26, 75, 140, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            color: var(--dark-blue);
+        }
+
+        .modal-description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid var(--primary-blue);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--dark-blue);
+            box-shadow: 0 0 0 3px rgba(26, 75, 140, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .code-error {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            min-height: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-buttons .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #153a70, #091f42);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f0f2f8;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px);
+        }
+
+        .modal-footer-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .modal-footer-info i {
+            color: var(--primary-blue);
+            margin-right: 0.5rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .main-test-card {
+                padding: 1.5rem;
+            }
+
+            .test-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .test-title {
+                font-size: 1.5rem;
+            }
+
+            .test-stats {
+                gap: 1rem;
+                flex-direction: row;
+                /* 确保在手机端也是横向排列 */
+                justify-content: space-around;
+            }
+
+            .stat-number {
+                font-size: 1.6rem;
+            }
+
+            .stat-label {
+                font-size: 0.85rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .modal-content {
+                padding: 20px 15px;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+            }
+
+            .test-container {
+                margin: 10px auto;
+                padding: 20px 16px;
+                border-radius: 12px;
+                max-width: 95%;
+            }
+
+            .test-header {
+                font-size: 1.1em;
+            }
+
+            .question-title {
+                font-size: 1.1em;
+                padding: 0 5px;
+            }
+
+            .option-card {
+                font-size: 1em;
+                padding: 16px 12px;
+            }
+
+            .test-btns {
+                gap: 10px;
+            }
+
+            canvas {
+                width: 100%;
+                height: 400px;
+            }
+
+            .result-wrap {
+                margin: 10px auto;
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            .result-title {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .main-header {
+                padding: 2rem 1rem;
+            }
+
+            .main-container {
+                margin: -30px auto 1rem;
+            }
+
+            .test-stats {
+                gap: 0.8rem;
+                justify-content: space-between;
+            }
+
+            .stat-item {
+                flex: 1;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .test-container {
+                padding: 16px 12px;
+            }
+
+            .question-title {
+                font-size: 1em;
+            }
+
+            .option-card {
+                padding: 14px 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 0;
+                font-size: 1em;
+            }
+
+            .result-title {
+                font-size: 22px;
+            }
+
+            .result-section-title {
+                font-size: 18px;
+            }
+
+            .analysis-card {
+                padding: 16px 14px;
+            }
+
+            /* 底部进一步缩小 */
+            .main-footer {
+                padding: 1rem 0.8rem;
+            }
+
+            .footer-logo {
+                font-size: 1rem;
+            }
+
+            .footer-description {
+                font-size: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .footer-links {
+                margin: 0.8rem 0;
+            }
+
+            .footer-link {
+                font-size: 0.75rem;
+            }
+
+            .copyright {
+                font-size: 0.7rem;
+                margin-top: 0.8rem;
+                padding-top: 0.8rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .test-stats {
+                gap: 0.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.3rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 背景装饰元素 -->
+    <div class="bg-deco">
+        <div class="deco-circle"></div>
+        <div class="deco-circle"></div>
+        <div class="deco-circle"></div>
+    </div>
+
+    <!-- 首页 -->
+    <div id="home-page" class="page active">
+        <header class="main-header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <i class="fas fa-deer"></i>
+                    麋鹿心理测试
+                </h1>
+                <p class="tagline">探索内心世界 · 了解真实自我</p>
+                <p class="description">
+                    基于专业心理学理论，提供科学、隐私、深入的心理测评。
+                    帮助您更好地理解自己的性格特点、情感模式和行为倾向。
+                </p>
+            </div>
+        </header>
+
+        <main class="main-container">
+            <!-- 主测试卡片 -->
+            <section class="main-test-card">
+                <div class="test-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h2 class="test-title">麋鹿性偏好测试</h2>
+                <p class="test-description">
+                    深入分析22个维度的性心理倾向，帮助您科学理解自己的性偏好模式、
+                    权力倾向、角色偏好等复杂心理结构。本测试基于心理学原理设计，
+                    旨在帮助您更好地了解自我，建立更健康的亲密关系。
+                </p>
+
+                <div class="test-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">66</span>
+                        <span class="stat-label">个精心设计的问题</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">22</span>
+                        <span class="stat-label">个维度深度分析</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">15</span>
+                        <span class="stat-label">分钟完成测试</span>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="start-btn">
+                    <i class="fas fa-play-circle"></i> 开始测试
+                </button>
+            </section>
+
+            <!-- 平台特性 - 时间线样式 -->
+            <section class="timeline-section">
+                <h2 class="section-title">我们的核心优势</h2>
+
+                <div class="timeline-container">
+                    <!-- 特性 1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">隐私保护</h3>
+                            <p class="timeline-description">
+                                所有测试数据仅存储于您的设备本地，不上传任何服务器，
+                                确保您的隐私安全。我们承诺绝不收集或分享您的个人信息。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 特性 2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">专业可靠</h3>
+                            <p class="timeline-description">
+                                基于心理学理论设计，参考多项专业量表，与心理学专家合作开发。
+                                确保测评的科学性和有效性，提供真实有价值的心理洞察。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 特性 3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3 class="timeline-title">深度分析</h3>
+                            <p class="timeline-description">
+                                提供多维度的详细分析和个性化建议，包含22个维度的专业解读，
+                                帮助您深入理解测试结果，获得实用的自我提升建议。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 底部区域 - 缩小版 -->
+        <footer class="main-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-brain"></i>
+                    麋鹿心理测试平台
+                </div>
+                <p class="footer-description">
+                    致力于提供科学、专业、易用的心理测评工具，
+                    帮助每个人更好地认识自己，促进心理健康成长。
+                </p>
+
+                <div class="footer-links">
+                    <a href="#" class="footer-link">使用条款</a>
+                    <a href="#" class="footer-link">隐私政策</a>
+                    <a href="#" class="footer-link">关于我们</a>
+                    <a href="#" class="footer-link">联系我们</a>
+                </div>
+
+                <p class="copyright">
+                    © 2023 麋鹿心理测试平台. 保留所有权利.<br>
+                    本平台仅供个人娱乐和自我探索使用，不替代专业心理咨询。
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 测试页面 -->
+    <div id="test-page" class="page">
+        <div class="test-header">
+            <span class="test-header-title">麋鹿·性偏好测试</span>
+        </div>
+        <div class="test-container">
+            <div class="progress-bar-bg">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="question-info" id="questionInfo"></div>
+            <div class="question-title" id="questionTitle"></div>
+            <div class="options-list" id="optionsList"></div>
+            <div class="test-btns">
+                <button id="prevBtn" class="nav-btn">上一题</button>
+                <button id="nextBtn" class="nav-btn main-btn">下一题</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果页面 -->
+    <div id="result-page" class="page">
+        <div class="result-wrap">
+            <div class="result-title">（麋鹿）性偏好测试</div>
+            <div class="result-hr"></div>
+            <div class="result-section-title">测评结果</div>
+            <div class="result-panel">
+                <div class="radar-box">
+                    <canvas id="radar"></canvas>
+                </div>
+                <div class="legend">各维度得分（蓝色：得分）</div>
+            </div>
+
+            <div class="result-section-title" style="margin-top:28px;">分析与建议</div>
+            <div class="analysis-wrap" id="analysis"></div>
+
+            <button class="back-btn" id="back-to-home">返回首页</button>
+        </div>
+    </div>
+
+    <!-- 兑换码弹窗 - 使用新建文本文档中的版本 -->
+    <div id="code-modal" class="code-modal">
+        <div class="modal-content">
+            <div class="modal-close" id="modal-close">&times;</div>
+            <div class="modal-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2 class="modal-title">请输入兑换码</h2>
+            <p class="modal-description">请输入您在小红书购买的兑换码，验证通过后即可开始灵魂契合度测试</p>
+
+            <input type="text" id="code-input" class="code-input" placeholder="输入兑换码（如：PSYCH001）">
+            <div id="code-error" class="code-error"></div>
+
+            <div class="modal-buttons">
+                <button id="cancel-btn" class="btn btn-secondary">取消</button>
+                <button id="confirm-btn" class="btn btn-primary">确认</button>
+            </div>
+
+            <div class="modal-footer-info">
+                <p>
+                    <i class="fas fa-info-circle"></i> 提示：每个兑换码仅限使用一次，验证成功后24小时内可无限次访问
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 核心功能模块
+        const START_UTC = Date.parse('2025-09-12T00:00:00Z');
+        const DATE_TO_CODE_ENC = `
+          fCU1NzUyKjY1KjY3JT0lMTQ2MDIyJSslNTc1Mio2NSo2NiU9JTI/ND41NyUrJTU3NTIqNjUqNjUlPSU2NzMyPzAlKyU1NzUyKjY1KjY0JT0lPjUwMTYzJSslNTc1Mio2NSo2MyU9JTQ2PzUyNyUrJTU3NTIqNjUqNjIlPSUwMTczPjQlKyU1NzUyKjY1KjYxJT0lNTMyPzc2JSslNTc1Mio2NSo2MCU9JTE+NzI1MCUrJTU3NTIqNjUqNj8lPSU/MDM2Mj4lKyU1NzUyKjY1KjY+JT0lNTYyMT8zJSslNTc1Mio2NSo1NyU9JTI3PjQwNSUrJTU3NTIqNjUqNTYlPSUwPzM1NjElKyU1NzUyKjY1KjU1JT0lNjExPjQzJSslNTc1Mio2NSo1NCU9JT43MjA2NSUrJTU3NTIqNjUqNTMlPSU0MjA/NTclKyU1NzUyKjY1KjUyJT0lMTM3Nj4yJSslNTc1Mio2NSo1MSU9JT80PjUwMyUrJTU3NTIqNjUqNTAlPSU2NzUxPz4lKyU1NzUyKjY1KjU/JT0lMj42MDQ3JSslNTc1Mio2NSo1PiU9JTAzNDc1MiUrJTU3NTIqNjUqNDclPSU1NjEyMzQlKyU1NzUyKjY1KjQ2JT0lPj83NjIzJSslNTc1MSo3Nio3NiU9JTI0MT43NSUrJTU3NTEqNzYqNzUlPSU/MzMyNjAlKyU1NzUxKjc2Kjc0JT0lNjU+MDcyJSslNTc1MSo3Nio3MyU9JTAxPzU3MyUrJTU3NTEqNzYqNzIlPSUzMjUxNjAlKyU1NzUxKjc2KjcxJT0lNDc2MD8xJSslNTc1MSo3Nio3MCU9JT4wMjM0NyUrJTU3NTEqNzYqNz8lPSUyMz81NjQlKyU1NzUxKjc2Kjc+JT0lMT41Mj8wJSslNTc1MSo3Nio2NyU9JTQ2Mz8xNyUrJTU3NTEqNzYqNjYlPSU/NzA2NTIlKyU1NzUxKjc2KjY1JT0lNTE3PjM/JSslNTc1MSo3Nio2NCU9JTI3NDA2PiUrJTU3NTEqNzYqNjMlPSUxMDY1MjMlKyU1NzUxKjc2KjYyJT0lPj81MTc0JSslNTc1MSo3Nio2MSU9JTM2Mj4wMSUrJTU3NTEqNzYqNjAlPSUwNzcyNT8lKyU1NzUxKjc2KjY/JT0lMjE+PzczJSslNTc1MSo3Nio2PiU9JT8yMDU2PiUrJTU3NTEqNzYqNTclPSU2PjMyMDQlKyU1NzUxKjc2KjU2JT0lMDQxNz82JSslNTc1MSo3Nio1NSU9JTU/NDE+NyUrJTU3NTEqNzYqNTQlPSU+MDI2PzUlKyU1NzUxKjc2KjUzJT0lMzU/Mj4wJSslNTc1MSo3Nio1MiU9JTE3ND82MyUrJTU3NTEqNzYqNTElPSU/MjczNT4lKyU1NzUxKjc2KjUwJT0lMjY+MDMxJSslNTc1MSo3Nio1PyU9JTAxMzQ3NSUrJTU3NTEqNzYqNT4lPSU+PzU2MDclKyU1NzUxKjc2KjQ3JT0lNDMwPjY1JSslNTc1MSo3Nio0NiU9JTE2NzU/MyUrJTU3NTEqNzUqNzYlPSUwND82Mj4lKyU1NzUxKjc1Kjc1JT0lNjUxPjcwJSslNTc1MSo3NSo3NCU9JT8+MjQ2NyUrJTU3NTEqNzUqNzMlPSUyMDUxNzYlKyU1NzUxKjc1KjcyJT0lMT83NT4yJSslNTc1MSo3NSo3MSU9JTQzPjA/NSUrJTU3NTEqNzUqNzAlPSUyNz8wNTElKyU1NzUxKjc1Kjc/JT0lPjMwNDY3JSslNTc1MSo3NSo3PiU9JTU0NzI/MCUrJTU3NTEqNzUqNjclPSUxNjIzPzclKyU1NzUxKjc1KjY2JT0lMD8zNzI+JSslNTc1MSo3NSo2NSU9JTQ2NTM+PyUrJTU3NTEqNzUqNjQlPSU+MDc1PzMlKyU1NzUxKjc1KjYzJT0lMzIxMDU2JSslNTc1MSo3NSo2MiU9JT81NDc2MyUrJTU3NTEqNzUqNjElPSU2MTA+NDclKyU1NzUxKjc1KjYwJT0lMT43MjM/JSslNTc1MSo3NSo2PyU9JTIwNTc+NCUrJTU3NTEqNzUqNj4lPSU/MzYwMTclKyU1NzUxKjc1KjU3JT0lNT40PzAyJSslNTc1MSo3NSo1NiU9JTAxNzM1PyUrJTU3NTEqNzUqNTUlPSU+NTMxNjclKyU1NzUxKjc1KjU0JT0lMj8wNjczJSslNTc1MSo3NSo1MyU9JTQ2NzUyPiUrJTU3NTEqNzUqNTIlPSU/MDMxPjUlKyU1NzUxKjc1KjUxJT0lMzE+NDY3JSslNTc1MSo3NSo1MCU9JTEyNT4zNyUrJTU3NTEqNzUqNT8lPSU+PzMyNjclKyU1NzUxKjc0Kjc2JT0lMzA0Pjc1JSslNTc1MSo3NCo3NSU9JTY+Nz8xMiUrJTU3NTEqNzQqNzQlPSU+MT81NjclKyU1NzUxKjc0KjczJT0lNDMyMD8+JSslNTc1MSo3NCo3MiU9JTA3NzI2MyUrJTU3NTEqNzQqNzElPSU1MjYxNzAlKyU1NzUxKjc0KjcwJT0lPz40MjUzJSslNTc1MSo3NCo3PyU9JTMwMTQ3NiUrJTU3NTEqNzQqNz4lPSUxMjU/NzMlKyU1NzUxKjc0KjY3JT0lNTczMjY/JSslNTc1MSo3NCo2NiU9JT8+NzQyMCUrJTU3NTEqNzQqNjUlPSU0MDY+NzMlKyU1NzUxKjc0KjY0JT0lMjY+PzU0JSslNTc1MSo3NCo2MyU9JTMxPzc1NiUrJTU3NTEqNzQqNjIlPSU+NzAyNj8lKyU1NzUxKjc0KjYxJT0lNjQ/MTM3JSslNTc1MSo3NCo2MCU9JT83NTIzPiUrJTU3NTEqNzQqNj8lPSUyNz41NjQlKyU1NzUxKjc0KjY+JT0lMDE2Mz83JSslNTc1MSo3NCo1NyU9JTQ/NTA3MyUrJTU3NTEqNzQqNTYlPSU+NjI/NzUlKyU1NzUxKjc0KjU1JT0lMTM3NTQwJSslNTc1MSo3NCo1NCU9JTU3Mj4wNiUrJTU3NTEqNzQqNTMlPSU/MDE3NjMlKyU1NzUxKjc0KjUyJT0lMj4wMzU3JSslNTc1MSo3NCo1MSU9JTY0Pz4wMiUrJTU3NTEqNzQqNTAlPSU/NzM1NjElKyU1NzUxKjc0KjU/JT0lMTU+MDYyJSslNTc1MSo3NCo1PiU9JT42PzQzNyUrJTU3NTEqNzQqNDclPSU1MjM+Nz8lKyU1NzUxKjc0KjQ2JT0lMD80MTc2JSslNTc1MSo3Myo3NiU9JTYxNDI+MyUrJTU3NTEqNzMqNzUlPSU/MTc1MD4lKyU1NzUxKjczKjc0JT0lMjA1MTM/JSslNTc1MSo3Myo3MyU9JT40Mz81NyUrJTU3NTEqczMqNzIlPSUzNzIwNjUlKyU1NzUxKjczKjcxJT0lPz43NTQxJSslNTc1MSo3Myo3MCU9JTI2ND83MyUrJTU3NTEqczMqNz8lPSUwMzE+PzYlKyU1NzUxKjczKjc+JT0lNjIzPzc1JSslNTc1MSo3Myo2NyU9JT83MDUxMyUrJTU3NTEqczMqNjYlPSUxPjI0Mz8lKyU1NzUxKjczKjY1JT0lNT8yMDE+JSslNTc1MSo3Myo2NCU9JT4zNTE3NCUrJTU3NTEqczMqNjMlPSUzMDc0Nj8lKyU1NzUxKjczKjYyJT0lMj8+NTcwJSslNTc1MSo3Myo2MSU9JTQxMDY+NSUrJTU3NTEqczMqNjAlPSU/MjQwNjclKyU1NzUxKjczKjY/JT0lNTc2MjA+JSslNTc1MSo3Myo2PiU9JT4/MTYyMyUrJTU3NTEqczMqNTclPSUzMjA0NTElKyU1NzUxKjczKjU2JT0lPjc0MDc2JSslNTc1MSo3Myo1NSU9JTYxMz8+NSUrJTU3NTEqczMqNTQlPSUwNDUxNzYlKyU1NzUxKjczKjUzJT0lNTY2PzIwJSslNTc1MSo3Myo1MiU9JT81MzE+NyUrJTU3NTEqczMqNTElPSUyNjAxNDclKyU1NzUxKjczKjUwJT0lMT83NTM2JSslNTc1MSo3Myo1PyU9JTQzMjA1PyUrJTU3NTEqczMqNT4lPSU+MDU3NjMlKyU1NzUxKjczKjQ3JT0lMzI3PjE0JSslNTc1MSo3Mio3NiU9JTA3NT8xNiUrJTU3NTEqNzIqNzUlPSU+Nj81MDIlKyU1NzUxKjcyKjc0JT0lNDYwMjM3JSslNTc1MSo3Mio3MyU9JTE/PjAzNSUrJTU3NTEqNzIqNzIlPSUyMzc2NT8lKyU1NzUxKjcyKjcxJT0lNDAzMTcyJSslNTc1MSo3Mio3MCU9JT8yMTU2PiUrJTU3NTEqNzIqNz8lPSU1PjYxMzclKyU1NzUxKjcyKjc+JT0lMjc0PzA2JSslNTc1MSo3Mio2NyU9JTA+MzQyMSUrJTU3NTEqNzIqNjYlPSU2PzcyPjQlKyU1NzUxKjcyKjY1JT0lPjU/MzcwJSslNTc1MSo3Mio2NCU9JTEwNzY1MiUrJTU3NTEqNzIqNjMlPSU1MzA+Nj8lKyU1NzUxKjcyKjYyJT0lPj8yMDczJSslNTc1MSo3Mio2MSU9JTE2NTA/NCUrJTU3NTEqNzIqNjAlPSUwMzUxNjElKyU1NzUxKjcyKjY/JT0lNDc+MjA1JSslNTc1MSo3Mio2PiU9JT8xMzY+MCUrJTU3NTEqNzIqNTclPSUyMDQ/NzYlKyU1NzUxKjcyKjU2JT0lPjUxMzI3JSslNTc1MSo3Mio1NSU9JTQ2Mz4/MCUrJTU3NTEqNzIqNTQlPSUwNzYyMzUlKyU1NzUxKjcyKjUzJT0lPjU3MzYxJSslNTc1MSo3Mio1MiU9JTI2Pzc1NCUrJTU3NTEqNzIqNTElPSUxNDI/NjAlKyU1NzUxKjcyKjUwJT0lNTA0Mz4/JSslNTc1MSo3Mio1PyU9JT4xNTY3MCUrJTU3NTEqNzIqNT4lPSUzNjc1Mj4lKyU1NzNTEqNzIqNDclPSUyPj8wNjQlKyU1NzUxKjcyKjQ2JT0lMDU3Pj8zJSslNTc1MSo3MSo3NiU9JT83NjE1NCV6
+        `;
+
+        // 兑换码相关功能 - 使用新建文本文档中的版本
+        let isCodeValidated = false;
+        let accessToken = null;
+        const EDGE_FUNCTION_URL = 'https://whxquysnluktjhkfnsql.supabase.co/functions/v1/validate-redemption-code';
+
+        // 题库（按照用户提供问题，5级同意度）
+        const MILU_QUESTIONS = [
+            '是否可以扔掉一切的自尊心换取更好的性体验？',
+            '在情感关系中，如果伴侣能够为自己做正确的选择，自己会表现得非常听话？',
+            '是否面对他人的痛苦感到无动于衷，甚至还有点享受？',
+            '是否会对伴侣的精神出轨表现出强烈的排斥和不能容忍？',
+            '面对自己喜欢的人是否会故意制造某些情景，寻求更多接触的机会？',
+            '是否对不同的性行为都会有浓厚的兴趣，并且愿意积极地去尝试实践？',
+            '是否常常会产生强烈的自我厌恶情绪？',
+            '是否会喜欢那种想反抗又无力反抗的性体验？',
+            '面对比自己弱的人，常常会产生优越感和看不起的态度？',
+            '是否常常会幻想与多人同时发生性关系？',
+            '是否感到自己心爱的东西或人被他人所占有而感到兴奋？',
+            '是否会喜欢与伴侣进行性别互换的体验？',
+            '是否并不太服从于规则或权威，总是会做一些违反规定的行为？',
+            '是否会喜欢拍摄一些自己露骨的照片，并会有分享给陌生人看的冲动？',
+            '在性关系中，是否会希望自己能够完全被束缚任由对方随便差遣？',
+            '在性幻想中，是否有时会把自己代入异性的身份和视角来获得快感？',
+            '是否会时刻想了解伴侣的行踪和人际关系？',
+            '在性生活中，是否会希望伴侣被迫服从于自己？',
+            '是否会认同性生活的精神上的共鸣比生理上的发泄重要很多？',
+            '是否感到自己并不抗拒与同性好友之间亲密的肢体接触，并且非常喜欢？',
+            '是否会把情感关系当成一种评估自身价值或段位的体现？',
+            '是否为了满足自己的需求和感受有时会变得不择手段？',
+            '是否对异性的身体和某些款式衣服会有羡慕或崇拜感，常常会幻想穿上它的样子？',
+            '是否会因为被他人察觉自己浪荡的一面而感到异常的兴奋？',
+            '是否会故意做一些恶作剧来吸引他人的注意和关注？',
+            '对异性的某些贴身衣物是否会特别情有独钟，看到会情不自禁地陷入幻想？',
+            '是否在某些情绪压力的刺激下会产生自我伤害的冲动？',
+            '在性生活中，伴侣的反抗会让自己更兴奋？',
+            '是否对极端暴力的行为有着特殊的迷恋？',
+            '相比平等的情感关系，是否会更喜欢崇拜或仰慕自己的伴侣？',
+            '有时某些生理的痛点会让自己产生愉悦感或兴奋感？',
+            '是否有时会幻想在公共场合尝试性活动？',
+            '假如自己无法满足伴侣的某些性需求，是否会支持让他人来满足？',
+            '是否有时会对某些同性产生特殊的情感和幻想？',
+            '在情感关系中，是否会常常在自尊心的驱使下故意说些违背自己意愿和感受的话？',
+            '是否会把某些特定的物品和性幻想联系在一起？',
+            '当面对某些情绪上头时总是变得非常暴躁，极度渴望通过暴力方式来宣泄？',
+            '有时嗅觉上的刺激相比于视觉上的刺激会更有吸引力？',
+            '在情感关系中通常表现得比较被动，希望对方来承担主导者的角色？',
+            '是否会故意说一些气人的话或反话来试探伴侣的反应？',
+            '面对弱势群体是否容易心生怜悯，觉得自己应该承担保护他们的责任？',
+            '在情感关系中，一切尽在自己的掌控中对自己来说才是最安全的？',
+            '面对他人的痛苦或求助，是否愿意积极地提供帮助和支持？',
+            '在情感关系中，总会要求伴侣按照自己的意愿来行事？',
+            '生活中是否会为了某些纪念节日而精心策划一番？',
+            '在情感关系中，是否常常会产生强烈的不配感？',
+            '是否常常无故对他人产生敌意和攻击性？',
+            '是否对不确定的情感结果会表现得特别担忧和焦虑？',
+            '长期一对一的性生活是否会让自己感到枯燥麻木？',
+            '对于某些汗臭味和分泌物的味道并没有那么排斥，甚至有点迷恋？',
+            '是否会经常利用肢体语言来传达自己的意图？',
+            '是否认同性关系一定要建立在爱情的基础上？',
+            '有时会喜欢用语言攻击或嘲讽别人来体现自己的优越感？',
+            '是否会更喜欢以卑微乞求的状态来获得性满足？',
+            '如果在保证安全的情况下，是否愿意尝试体验一下某些特殊的性派对？',
+            '对于自己喜欢的人和东西是否会有特别强烈的执念，一定要占为己有？',
+            '是否对未知不确定的事情会充满担忧和焦虑，常常难以做出决策？',
+            '在性生活中，是否会特别注重前期的调情过程并实践？',
+            '如果伴侣足够优秀的话，是否会非常乐意充当弱势的一方，并臣服于对方？',
+            '是否会喜欢通过一些暗示性的行为或语言来诱导伴侣？',
+            '被完全束缚所带来的性满足是否会让自己减轻很多道德上的压力或人设包袱？',
+            '假如抛开道德和社会舆论的压力，是否会期待自己以异性的身份来生活？',
+            '是否容易被弱小可爱的动物或人所吸引，并且缺乏抵抗力？',
+            '是否对没有情感基础的对象不会产生任何的生理性冲动？',
+            '在性关系中，只要伴侣有需求都会尽力配合并满足对方？',
+            '是否对一些突破自己道德底线的性行为会表现得特别着迷？',
+            '在性生活中，是否会希望伴侣在毫无抵抗力的情况下任自己为所欲为？',
+            '面对自己喜欢的人是否会积极地展现自己性感的一面？'
+        ];
+
+        const OPTIONS = [
+            { text: '非常不认同', score: 1 },
+            { text: '比较不认同', score: 2 },
+            { text: '中立', score: 3 },
+            { text: '比较认同', score: 4 },
+            { text: '非常认同', score: 5 }
+        ];
+
+        const LABELS = ['虐待', '羞辱', '征服', '控制', '强迫', '保护', '受虐', '屈辱', '臣服', '服从', '被迫', '叛逆', '放纵', '暴露', '群体', '跨性', '同性', '恋物', 'NTR', '纯爱', '诱导', '情调'];
+
+        const ANALYSIS = {
+            '虐待': {
+                high: '高分：具有强烈的虐待欲望和潜质，虐待欲望通常是S属性的表现，指的是在性关系中喜欢通过暴力伤害和精神虐待的方式来发泄自己的欲望和仇恨，把自身的快乐建立在他人的痛苦基础上，因他人的痛苦而感到兴奋和满足。可能在性行为中需要看到或听到伴侣的痛苦反应才能达到充分的性满足，这种欲望强烈且持续。⚠️ 重要提示： 前提要保证在双方自愿，且不会给对方身体或心灵造成什么实质性的伤害下进行尝试。需要建立安全词机制，事后提供充分的关怀（aftercare）。',
+                mid: '中分：具有一定的虐待倾向，可能偶尔在性关系中会有施加轻微疼痛或精神刺激的冲动，但这种欲望并不强烈或相对克制。可能只在特定情境下才会表现出来，并且能够根据伴侣的反应及时调整强度。更多是浅尝辄止的探索，而非核心性需求。⚠️ 重要提示： 即使是轻微的虐待行为也需要事前沟通和征得同意，注意观察伴侣的身体和心理反应。',
+                low: '低分：基本没有虐待倾向，在性行为中不喜欢或无法从施加疼痛中获得快感。可能对任何形式的暴力对待感到不适或反感，更倾向于温柔舒适的性体验。',
+                note: '仅限自愿与安全边界内，严禁任何实质伤害。'
+            },
+            '羞辱': {
+                high: '高分：具有强烈的羞辱他人的欲望，在性关系中非常喜欢通过语言攻击、精神打压、人格贬低来获得控制感和优越感。可能会用侮辱性称呼、贬低性评价、公开羞辱等方式来满足自己的精神需求。这种欲望强烈且明确，羞辱过程本身就是性兴奋的重要来源。⚠️ 重要提示： 精神羞辱可能造成严重的心理创伤，必须事前详细沟通边界，了解伴侣的心理承受能力和禁忌话题，建立完善的事后关怀机制。',
+                mid: '中分：具有一定的羞辱欲望，可能在性关系中喜欢通过语言攻击、精神打压和人身侵犯，以发泄自身的攻击性来获得精神上的满足。但欲望并不强烈或者相对克制。可能只是偶尔使用一些轻微的贬低性语言或调侃，而不会进行深度的人格羞辱。⚠️ 重要提示： 要明白这种精神羞辱可能会给伴侣带来巨大身心的创伤，需要适当的克制和把握尺度。',
+                low: '低分：没有羞辱他人的欲望，在性关系和日常互动中更倾向于尊重和鼓励伴侣。可能对任何形式的语言攻击和精神打压感到不适，认为这会破坏亲密关系的信任基础。更喜欢通过赞美和肯定来增进亲密感。',
+                note: '易致心理创伤，需停用词与事后修复。'
+            },
+            '征服': {
+                high: '高分：具有强烈的征服欲望和潜质，在情感关系和性关系中明显偏好主导地位，需要掌握绝对的控制权和主动权。喜欢通过展现力量、智慧或魅力来确立支配地位，从让伴侣臣服和依赖中获得深刻的满足感。可能在生活各方面都表现出强烈的领导欲和竞争心态，情感胜负欲极强。⚠️ 重要提示： 征服欲应限于双方约定的关系框架内，日常生活中应给予伴侣充分的自主权和平等地位，避免将性癖好演变为情感控制或精神PUA。',
+                mid: '中分：具有一定的征服欲望和潜质，可能在情感关系和性关系中会比较喜欢充当主导者的角色，可能喜欢居高临下的展现自己的强势和优越感，来满足自己的精神需求，通常可能具有一定的情感胜负欲，但欲望并不强烈或者相对比较克制。能够根据情境和伴侣的特点灵活调整自己的角色定位。⚠️ 重要提示： 抛开性关系后，也要给对方提供平等自由的空间，不适宜过度的干涉对方的生活和权力。',
+                low: '低分：征服欲望较弱，在关系中更倾向于平等地位或由伴侣主导。不喜欢占据绝对优势或被过分依赖的感觉，可能认为征服游戏会破坏关系的自然和谐。',
+                note: '场景外回到平等与尊重。'
+            },
+            '控制': {
+                high: '高分：具有强烈的控制欲望，在性关系和情感关系中都希望全面掌握主导权。可能表现为制定详细规则、安排日程、监督行为、限制社交等，从对伴侣生活的全方位影响力中获得安全感和满足感。这种特质与Dom/sub动态中的支配方（D方）角色高度相关，可能需要通过控制来确认自己在关系中的重要性。⚠️ 重要提示： 控制行为必须在双方协商一致的范围内，要明确区分健康的权力交换与不健康的情感虐待，尊重伴侣的基本人权、隐私和自由意志。',
+                mid: '中分：有一定的控制倾向，可能在特定场景（如性行为）中喜欢主导节奏和方式，但在日常生活中相对灵活。可能会对关系的某些方面（如性生活安排、约会计划）表现出控制欲，但不会延伸到伴侣的全部生活领域。能够根据伴侣的反馈适当调整控制程度。⚠️ 重要提示： 需要定期与伴侣沟通，确保控制行为在双方都舒适的范围内，避免越界。',
+                low: '低分：并没有明显的控制欲望，在关系中更倾向于顺其自然或由伴侣主导。不喜欢制定规则或限制对方，更享受自由随性的相处模式。可能更适合被安排和引导，或者偏好完全平等、互不干涉的关系模式。'
+            },
+            '强迫': {
+                high: '高分：具有强烈的强迫性幻想，在性关系中非常喜欢模拟"非自愿"情境（CNC - Consensual Non-Consent，即协商一致的非同意情节）。这种欲望源于对绝对控制权的向往和对伴侣"被迫"反应的强烈兴奋。可能幻想或实践束缚、强制、抵抗等情节，从打破伴侣的"抵抗"中获得征服感。⚠️ 重要提示： 这是最需要谨慎对待的特质之一，必须事前详细协商场景、具体行为、边界和安全词，确保"强迫"仅存在于角色扮演层面。任何真实的非自愿行为都构成性侵犯，属于严重犯罪。',
+                mid: '中分：有一定的强迫性幻想或倾向，但通常较为温和，可能只是在性行为中偶尔表现出主动进取或略带强势的态度，比如主导性爱的开始时间和方式，或者喜欢在伴侣"假装拒绝"的游戏中获得乐趣。能够很好地区分幻想与现实，不会真正做出违背伴侣意愿的行为。⚠️ 重要提示： 即使是轻度的强迫性游戏也需要事前沟通和明确同意，随时关注伴侣的真实感受。',
+                low: '低分： 并没有明显的强迫欲望，在性关系中更重视双方的主动参与和积极回应。可能对任何形式的"强迫"（即使是角色扮演）感到不适或抗拒，认为性应该建立在双方都渴望和享受的基础上。更喜欢温柔、平等、相互渴望的性互动。',
+                note: '仅限伪装置+安全词，绝不越界。'
+            },
+            '保护': {
+                high: '高分：具有强烈的保护欲和照顾欲，对弱小、天真、依赖性强或需要关怀的伴侣有特殊的吸引力和兴奋感。愿意并渴望承担照顾者、监护人的角色，从提供安全感、庇护和指引中获得深刻的满足感和存在价值。这种特质常见于DD/lg（Daddy Dom/little girl）、CG/l（Caregiver/little）等动态关系中，可能表现出父母般的关爱和权威。⚠️ 重要提示： 保护欲应该是健康的关怀而非占有控制，要尊重被保护者的成长和独立需求，避免演变为infantilization（过度幼稚化）或codependency（共依存关系）。',
+                mid: '中分：具有一定的保护欲望，可能对弱小天真的人更容易产生兴趣和保护欲，同时愿意承担保护他们的责任，但欲望并不是压倒性的。可能在伴侣脆弱或需要帮助时表现出保护倾向，但不会主动寻求或依赖这种角色定位。能够在照顾者和平等伴侣之间切换角色。',
+                low: '低分：保护欲较弱，在关系中不特别倾向于承担照顾者或保护者角色。可能更喜欢势均力敌、相互独立的伴侣关系，或者自己更需要被保护和照顾。对于过于依赖或需要大量照顾的伴侣可能感到压力或负担。'
+            },
+            '受虐': {
+                high: '高分：具有强烈的受虐倾向和潜质，在性行为中能够从身体疼痛、不适或苛刻对待中获得显著的性快感和心理满足。这种特质与M属性高度相关，可能需要一定程度的疼痛刺激才能达到充分的性唤起和高潮。疼痛本身成为性愉悦的重要来源，可能包括被打、被掐、被绑、被虐等各种形式。⚠️ 重要提示： 前提是保证在与伴侣之间的绝对信任，且不会给自己的身体或心灵造成实质性的伤害下进行尝试。必须设置安全词，明确自己的承受极限，选择有经验且负责任的伴侣。',
+                mid: '中分：具有一定的受虐倾向和潜质，可能在性行为中会比较喜欢被暴力对待，享受生理和精神上所带来的痛苦，但欲望并不强烈或相对比较克制。可能只能接受轻度的疼痛刺激（如拍打、轻咬），或者只在特定情绪状态下才享受这种感觉。疼痛是增味剂而非必需品。⚠️ 重要提示： 前提是保证在与伴侣之间的绝对信任，且不会给自己的身体或心灵造成实质性的伤害下进行尝试。',
+                low: '低分：基本没有受虐倾向，在性行为中不喜欢或无法从疼痛中获得快感。可能对任何形式的暴力对待感到恐惧、不适或反感，更倾向于温柔舒适的性体验。疼痛只会带来负面感受，无法转化为性兴奋。',
+                note: '掌握安全知识：力度/位置/器具卫生/停用词。'
+            },
+            '屈辱': {
+                high: '高分：具有强烈的受辱欲望和潜质，在性关系中非常渴望被伴侣进行人格侮辱、语言攻击、精神打压。可能喜欢被当成地位低下的动物、物品或发泄工具，从这种极致的挫败感和羞耻感中获得强烈的性兴奋和精神满足。这种屈辱感是性唤起的核心要素，可能包括被辱骂、被羞辱、被命令做屈辱的事等。⚠️ 重要提示： 前提是保证在与伴侣之间的绝对信任，且不会给自己的身心造成实质性的伤害下进行尝试。需要事前明确哪些话题和行为是禁忌，确保事后有充分的情感支持和自我价值的重建。',
+                mid: '中分：具有一定的受辱欲望和潜质，可能在性关系中会喜欢被伴侣进行人格侮辱、语言攻击、精神打压，可能会喜欢被当成地位下等的动物和发泄工具，追求挫败感所带来的精神满足，但欲望并不强烈或者相对比较克制。可能只能接受轻度的语言羞辱或角色扮演中的地位差异。⚠️ 重要提示： 前提是保证在与伴侣之间的绝对信任，且不会给自己的身心造成实质性的伤害下进行尝试。',
+                low: '低分：没有受辱欲望，在性关系和日常互动中需要被尊重和珍视。任何形式的侮辱、贬低都会造成严重的心理伤害，可能导致自尊心受损和关系破裂。更需要鼓励、赞美和平等对待来维持健康的性心理。',
+                note: '注意人格尊严与长期心理影响。'
+            },
+            '臣服': {
+                high: '高分：具有强烈的臣服欲望和潜质，在情感关系和性关系中深深渴望处于弱势和顺从的地位。可能非常享受以"舔狗"的方式仰慕、崇拜、服务自己的伴侣，从这种地位差异和单向付出中获得存在感和满足感。渴望被伴侣掌控和拥有，臣服本身就是核心的情感需求和性兴奋来源。⚠️ 重要提示： 抛开性关系后，也要坚守自己应有的权力、尊严和隐私。臣服应该是关系中的角色扮演，而非现实生活中的人格贬低。要警惕遇到会利用这种心理进行情感剥削的伴侣。',
+                mid: '中分：具有一定的臣服欲望和潜质，可能在情感关系和性关系会喜欢处于弱势和卑微的地位，可能会比较喜欢以舔狗的方式仰慕和崇拜自己的伴侣，但欲望并不强烈或者相对比较克制。可能只在特定情境或对特定类型的伴侣才表现出臣服倾向，平时仍能保持相对平等的关系状态。⚠️ 重要提示： 抛开性关系后，也要尊重自己应有的权力和隐私。',
+                low: '低分： 没有臣服欲望，在关系中更倾向于平等地位或占据主导位置。不喜欢处于弱势或被支配的感觉，可能对"舔狗"式的相处模式感到不适。更重视独立自主和相互尊重的伙伴关系。',
+                note: '性场景之外需尊重自身边界与隐私。'
+            },
+            '服从': {
+                high: '高分：具有强烈的服从欲望和潜质，在情感关系和性关系中非常渴望被支配、被管教、被命令。可能在情感关系中更愿意扮演弱小、服从、依赖的"小孩"角色（如little、baby等），从执行指令和讨好权威中获得安全感和满足感。服从本身带来愉悦，反抗或自主决策反而会引起焦虑。⚠️ 重要提示： 抛开性关系后，也要尊重和维护自己的隐私、自由和基本权利。服从应该限定在双方约定的范围内，不应扩展到所有生活领域。要学会在必要时说"不"，保护自己的底线。',
+                mid: '中分：具有一定的服从欲望和潜质，可能在情感关系和性关系中喜欢被支配、被管教，通常在情感关系更愿意扮演弱小服从依赖的小孩角色，来满足自己的精神需求。但欲望不是特别强烈或者相对的比较戒备克制。能够在服从和独立之间找到平衡，只在感到安全时才展现服从倾向。⚠️ 重要提示： 抛开性关系后，也要尊重自己的隐私和自由。',
+                low: '低分：没有明显的服从欲望，在关系中更倾向于自主决策和独立行动。不喜欢被管教或被命令，可能对权威产生本能的反感或质疑。更适合平等协商的关系模式或自己占主导的角色。'
+            },
+            '被迫': {
+                high: '高分：具有强烈的被迫幻想和欲望，在性行为中非常渴望通过模拟被束缚、被强迫、被胁迫的情节来获得性满足。这种幻想可能源于希望在性行为中"不承担责任"，以此来减轻道德、人设或社会期待的心理负担。从"被迫"做自己其实想做的事中获得解脱感和兴奋感。⚠️ 重要提示： 前提要保证在双方绝对信任且充分沟通的情况下进行尝试，必须设置清晰的安全词和边界，确保"被迫"只是角色扮演。要避免给自己的身心造成不必要的伤害，选择值得信任且有经验的伴侣。',
+                mid: '中分：具有一定的被迫欲望和潜质，可能在性行为中通过模拟被束缚或被强迫的情节来获得性满足，以此来减轻自己在道德和人设的包袱和压力。但这种欲望相对温和，可能只是轻度的"被动接受"或"假装抵抗"的游戏，而非强烈的非自愿幻想。⚠️ 重要提示： 前提要保证在双方绝对信任的情况下进行尝试，避免给自己的身心造成不必要的伤害。',
+                low: '低分：没有被迫幻想，在性行为中需要保持主动性和控制感。任何形式的束缚或强迫（即使是模拟）都会引起恐惧、焦虑或创伤反应。更需要在充分自主和安全的环境下进行性活动。',
+                note: '仅限伪装置+明确同意。'
+            },
+            '叛逆': {
+                high: '高分：具有强烈的叛逆性格和潜质，在关系中经常表现出挑衅、不服从、故意违抗的行为。非常喜欢通过违反规则、恶作剧、言语刺激来诱导伴侣的惩罚和关注，从这种"挑战-惩罚"的互动中获得强烈的精神满足和兴奋感。叛逆行为本身就是吸引关注和确认被在意的方式，属于典型的"brat"（顽劣sub）特质。⚠️ 重要提示： 需要找到能够理解并享受这种互动模式的伴侣，明确哪些叛逆是游戏，哪些是真正的不适。过度的叛逆可能会消耗伴侣的耐心，要把握好度。',
+                mid: '中分：具有一定的叛逆爱好和潜质，可能会在行为上表现出叛逆和不服从，通常不愿意轻易妥协，并且故意做出一些违反规则、恶作剧、言语刺激来诱导伴侣惩罚和关注，并且以此来获得精神上的满足。但欲望并不强烈或者相对的克制，可能只在某些情况下才表现出叛逆倾向。',
+                low: '低分：没有叛逆倾向，在关系中更倾向于顺从、配合或平和相处。不喜欢通过挑衅来获得关注，可能认为这种行为幼稚或破坏关系和谐。更倾向于直接、成熟的沟通方式来表达需求。'
+            },
+            '放纵': {
+                high: '高分：性观念非常开放，愿意尝试多样化的性行为、与多个伴侣的性关系，更喜欢一些突破传统道德底线的性行为和体验。可能对常规性行为感到乏味，需要不断探索新的刺激和禁忌领域来获得满足。可能认为性与爱可以分离，享受纯粹的肉体快感和新鲜感。⚠️ 重要提示： 同时也要避免过度的自我放纵的性行为，不是任何的本能欲望都必须要去探索和实践。要注意性健康、情感责任和法律边界，避免伤害他人或自己。',
+                mid: '中分：性观念相对开放，对多样化的性体验持接受态度，可能愿意在安全范围内尝试一些新鲜的性行为或有过多个性伴侣的经历。但仍保持一定的节制和选择性，不会完全放纵欲望，会考虑情感因素和道德边界。⚠️ 重要提示： 要在探索和自我保护之间找到平衡，确保所有行为都是在知情同意和安全的前提下进行。',
+                low: '低分： 性观念相对保守，倾向于专一、稳定的性关系，不太愿意尝试过于新奇或突破底线的性行为。可能认为性应该与情感紧密相连，对频繁更换性伴侣或过于开放的性行为感到不适。更重视性的情感意义而非单纯的生理刺激。',
+                note: '评估健康/法律/关系风险。'
+            },
+            '暴露': {
+                high: '高分：具有强烈的暴露癖好，喜欢在他人面前展示自己的身体或进行性行为，从被观看、被注意中获得强烈的性兴奋。可能喜欢在半公开或公开场合进行性行为，或通过网络、视频等方式展示自己的裸体或性行为。被他人的目光注视是重要的性刺激来源。⚠️ 重要提示： 公共场合的暴露和性行为可能违法，会侵犯他人权益并造成不适。如果有这种欲望，应该在合法、私密且参与者都同意的环境下实践（如swinger俱乐部、成人网站等）。',
+                mid: '中分：有一定的暴露倾向，可能在私密环境下喜欢被伴侣观看或欣赏自己的身体，或愿意在相对安全的情境下（如私人派对、特定社群）展示自己。但不会在公共场合或非自愿的观众面前暴露，能够把握合适的场合和边界。⚠️ 重要提示： 即使是私密环境，也要确保所有在场人员都同意和享受这种互动，尊重他人的界限。',
+                low: '低分：并没有明显的暴露癖好，在性行为中更重视隐私和私密性。不喜欢被他人看到自己的身体或性行为，可能对任何形式的暴露感到羞耻或不安。更倾向于在完全私密、安全的环境下进行性活动。',
+                note: '严禁违法拍摄与传播。'
+            },
+            '群体': {
+                high: '高分：具有强烈群体性行为的欲望和潜质，非常喜欢多人参与的性行为（如3P、换偶、群交等），享受更换不同性伴侣带来的新鲜感和刺激。性观念非常开放，热衷于探索刺激和与众不同的性体验，可能认为多人性行为能带来单人无法达到的快感层次。⚠️ 重要提示： 要注意的是群体性行为可能违背某些道德和法律原则，也可能带来性病传播、情感纠葛、隐私泄露等风险和问题。如果尝试，务必确保所有参与者都是成年人且完全自愿，做好安全措施，不建议盲目尝试。',
+                mid: '中分：对群体性行为持开放或好奇态度，可能愿意在合适的情况下尝试，但不是核心的性需求。可能幻想过或有兴趣体验，但在实际行动上会比较谨慎和选择性。需要足够的安全感和信任基础才会考虑参与。⚠️ 重要提示： 如果尝试，务必做好充分的沟通、设定边界、采取安全措施，并确保自己的情感能够承受这种体验。',
+                low: '低分：对群体性行为不感兴趣或持排斥态度，更倾向于一对一的亲密关系。可能认为性应该是两个人之间私密的连接，多人参与会破坏这种特殊性。对于开放式关系或多人性行为感到不适，更重视性的专一性和排他性。',
+                note: '注意健康与关系风险，遵法守纪。'
+            },
+            '跨性': {
+                high: '高分：具有强烈的跨性别欲望，在性关系中非常喜欢与伴侣之间进行性别与身份互换。如：男性扮演女性角色（男变女）、女性扮演男性角色（女变男）、女攻男受等性别角色颠覆。这种关系有时被称为"第四爱"，可能在某些性格、心态、行为模式上符合异性的特征，或者潜意识中存在一个不同性别的自我认同。可能伴随异装（变装）的强烈癖好。⚠️ 重要提示： 同时也要避免在公众场合去展现自己的特殊癖好，避免引起他人不适或造成社会误解。跨性别表达应在安全、接纳的环境中进行。',
+                mid: '中分：有一定的跨性别兴趣或好奇心，可能偶尔喜欢在性关系中尝试不同的性别角色或权力位置（如女性主导、男性臣服），但这不是持续性或强烈的需求。可能对性别角色扮演持开放态度，愿意在私密环境下探索，但日常生活中仍按照生理性别表现。⚠️ 重要提示： 探索性别角色时要与伴侣充分沟通，确保双方都舒适和享受这种体验。',
+                low: '低分：对跨性别或性别角色互换不感兴趣，更倾向于按照传统性别角色和生理性别进行性互动。可能对性别角色颠覆感到困惑或不适，更习惯和喜欢符合社会期待的性别表现方式。',
+                note: '尊重公共规范，避免冲突。'
+            },
+            '同性': {
+                high: '高分：具有强烈的同性欲望和潜质，这是同性恋或双性恋的表现。与同性之间会产生强烈的生理性冲动、性幻想以及深厚的情感吸引。同性可能是主要或唯一的性吸引对象，异性可能无法激起相同程度的性兴奋或情感共鸣。⚠️ 重要提示： 同性恋在许多国家和地区逐渐合法化、被大众所接受，这是正常的性取向，所以不需要有什么心理负担。如果面临社会压力，可以寻求LGBTQ+社群的支持。',
+                mid: '中分： 对同性有一定程度的吸引或好奇，可能是双性恋倾向，既对异性也对同性产生性吸引和情感兴趣。可能在某些情况下或对某些特定的同性个体产生性冲动，但不如高分者那样明确和强烈。可能仍在探索自己的性取向。⚠️ 重要提示： 性取向是流动的，不必急于给自己贴标签。重要的是尊重自己真实的感受和吸引力。',
+                low: '低分：主要或完全被异性吸引，对同性基本没有性冲动或浪漫情感。这是异性恋的表现，属于最常见的性取向。同性可能只是友情或欣赏层面的吸引，不涉及性欲或恋爱情感。'
+            },
+            '恋物': {
+                high: '高分：具有强烈的恋物癖好，对特定物品（尤其是与性相关的物品）有着强烈的性迷恋。可能包括异性的贴身衣物（内衣、袜子、鞋子）、特定材质（皮革、乳胶、丝绸）、特定服装（制服、高跟鞋）等。这些物品本身成为性兴奋的重要来源，可能需要这些物品的存在才能达到充分的性唤起。⚠️ 重要提示： 同时要避免在他人不知情、不允许的情况进行冒犯的行为，如偷窃他人物品、未经同意触摸或使用他人物品。恋物应在合法、道德的范围内进行。',
+                mid: '中分：具有一定的恋物癖好和潜质，可能对异性的贴身衣物有着特殊癖好，例如对某种服装、鞋子、内衣等感兴趣，但欲望并不强烈或者相对比较克制。这些物品可以增加性兴奋，但不是必需品。可能只是觉得某些物品性感或有吸引力，而非产生强烈的迷恋。⚠️ 重要提示： 同时要避免在他人不知情、不允许的情况进行冒犯的行为。',
+                low: '低分：没有明显的恋物倾向，性兴奋主要来源于人本身而非物品。对特定物品或材质没有特殊的性迷恋，可能认为过度关注物品会分散对伴侣本身的注意力。更重视人与人之间的互动和连接。',
+                note: '避免未经允许的侵犯与拿取。'
+            },
+            'NTR': {
+                high: '高分：具有强烈的NTR（绿帽）癖好和潜质，指的是一种特殊的性癖好：从想象或看到自己的伴侣与他人发生性关系中获得性兴奋。喜欢被"横刀夺爱"后享受这种精神上被绿、被背叛的屈辱感和失控感。这种癖好可能涉及旁观、被告知细节、或事后重温等方式。屈辱、嫉妒和无力感本身成为性刺激的来源。⚠️ 重要提示： 这是非常复杂且容易造成情感伤害的性癖好。如果要实践，必须与伴侣进行极其充分的沟通，确保双方都真心愿意且情感上能够承受。许多关系因为误判或沟通不足而破裂。',
+                mid: '中分：具有一定的NTR癖好和潜质，NTR指的是一种绿帽癖好，喜欢被他人横刀夺爱后而享受这种精神上被绿的屈辱感。但欲望并不强烈或者相对比较克制。可能只是偶尔有这种幻想，或者在特定情境下（如角色扮演）才会产生这种兴奋，但不一定愿意真正实践。⚠️ 重要提示： 幻想和现实是两回事，要谨慎区分。真实的背叛可能带来难以愈合的情感创伤。',
+                low: '低分：对NTR完全不感兴趣或强烈排斥，无法从伴侣与他人的性关系中获得任何愉悦，反而会感到痛苦、背叛和愤怒。更重视关系的专一性和忠诚度，认为伴侣的性行为应该是排他性的。任何形式的分享伴侣都是无法接受的。'
+            },
+            '纯爱': {
+                high: '高分：具有强烈的纯爱特质和理想，非常向往和追求纯洁、真诚、深厚的爱情关系。这种爱情不涉及复杂的情感纠葛、背叛、欺骗或多角关系，而是基于彼此的深度尊重、信任、忠诚和情感连接。强烈地认为性应该与爱紧密相连，无法接受没有情感基础的性关系。可能对一夜情、开放关系、多人性行为等持排斥态度。⚠️ 重要提示： 纯爱倾向本身是美好的，但也要认识到现实关系的复杂性，避免过度理想化导致失望。同时要尊重他人不同的关系选择。',
+                mid: '中分：具有一定的纯爱特质，可能更喜欢一种纯洁、真诚和深厚的爱情，它通常不涉及复杂的情感纠葛或背叛，而是基于彼此的尊重、信任。可能不太能接受没有爱的性关系，但也不会过分理想化或排斥所有非传统关系模式。在合适的情况下可能接受有情感基础的非排他性关系。',
+                low: '低分：对纯爱的追求不强烈，更能接受性与爱的分离。可能认为性可以是纯粹的肉体享受，不一定需要深厚的情感基础。对于开放关系、多元关系模式、或没有长期承诺的性关系持开放态度。更重视当下的感受和体验，而非传统意义上的"纯洁"和"忠诚"。'
+            },
+            '诱导': {
+                high: '高分：具有强烈的诱导能力和欲望，非常擅长通过展现性感魅力、使用暗示性的言语和行为来吸引和影响他人。可能精通各种诱惑技巧，如眼神交流、肢体接触、双关语、性暗示等。在性关系方面，能够熟练地引导伴侣的欲望和决定，让对方按照自己期望的方向发展关系。诱导本身可能带来征服感和控制感。',
+                mid: '中分：会有一定程度地展现性感和使用暗示行为言语，但可能在技巧和效果上稍逊一筹。在性关系方面，能一定程度上影响伴侣的决定，但不是特别得心应手。可能在熟悉的伴侣面前能够成功诱导，但面对新的对象时不够自信或熟练。',
+                low: '低分：不擅长或不喜欢诱导他人，在性方面比较直接或被动。可能不太会使用性暗示、调情技巧，或者认为这些手段不必要或不真诚。更倾向于等待对方主动，或者用直白的方式表达性意图。在影响伴侣决定方面能力较弱或不愿意这样做。'
+            },
+            '情调': {
+                high: '高分：具有强烈的浪漫意识和出色的调情能力，非常擅长为性关系营造情调和氛围。可能会精心安排约会、准备惊喜、使用浪漫的言语和举动来增进亲密感。深刻理解情感连接和性体验的关系，能够让伴侣感受到被珍视和渴望。在性行为前后都注重情感交流和浪漫元素，让性成为情感表达的一部分。',
+                mid: '中分：有一定的浪漫意识和调情能力，会尝试进行一些浪漫的举动来为性关系增添情调，但可能在深度和广度上不如高分者。能与伴侣有一定程度的共鸣，但不是每次都能达到理想状态。可能会记得重要日子、准备小惊喜，但不够持续或创意不足。',
+                low: '低分：浪漫意识较弱，不太擅长或不重视为性关系营造情调。可能更注重生理层面的满足而非情感氛围的营造，认为过多的浪漫仪式感不必要或做作。在调情和情感表达方面比较笨拙或直接，可能让伴侣感到缺乏情趣或情感连接。'
+            }
+        };
+
+        // 页面切换功能
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // 兑换码相关功能 - 使用新建文本文档中的版本
+        // 检查是否已经验证过兑换码（24小时内有效）
+        function checkAccess() {
+            const savedToken = localStorage.getItem('psych_access_token');
+            const savedTime = localStorage.getItem('psych_access_time');
+
+            if (savedToken && savedTime) {
+                const currentTime = new Date().getTime();
+                const accessTime = parseInt(savedTime);
+                if (currentTime - accessTime < 24 * 60 * 60 * 1000) {
+                    isCodeValidated = true;
+                    accessToken = savedToken;
+                    return true;
+                } else {
+                    localStorage.removeItem('psych_access_token');
+                    localStorage.removeItem('psych_access_time');
+                }
+            }
+            return false;
+        }
+
+        // 验证兑换码（通过 Edge Function）
+        async function validateCode(inputCode) {
+            const errorElement = document.getElementById('code-error');
+
+            if (!inputCode) {
+                errorElement.textContent = "请输入兑换码";
+                return false;
+            }
+
+            errorElement.textContent = "验证中...";
+
+            try {
+                // 调用 Edge Function 验证兑换码
+                const response = await fetch(EDGE_FUNCTION_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code: inputCode })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error);
+                }
+
+                // 验证成功，保存访问记录
+                localStorage.setItem('psych_access_token', inputCode);
+                localStorage.setItem('psych_access_time', new Date().getTime().toString());
+
+                isCodeValidated = true;
+                document.getElementById('code-modal').classList.remove('active');
+                startTest();
+                return true;
+
+            } catch (error) {
+                errorElement.textContent = error.message;
+                return false;
+            }
+        }
+
+        // 显示兑换码弹窗
+        function showCodeModal() {
+            document.getElementById('code-modal').classList.add('active');
+            document.getElementById('code-input').value = '';
+            document.getElementById('code-error').textContent = '';
+            document.getElementById('code-input').focus();
+        }
+
+        // 开始测试（跳转到测试页面）
+        function startTest() {
+            if (checkAccess()) {
+                // 如果已经验证过，直接跳转
+                showPage('test-page');
+                initTest();
+            } else {
+                showCodeModal();
+            }
+        }
+
+        // 测试功能模块
+        let testIdx = 0;
+        let testAnswers = [];
+
+        function initTest() {
+            testIdx = 0;
+            testAnswers = [];
+            renderTest();
+            updateTestProgress();
+            updateTestButtons();
+        }
+
+        function renderTest() {
+            const questionInfo = document.getElementById('questionInfo');
+            const questionTitle = document.getElementById('questionTitle');
+            const optionsList = document.getElementById('optionsList');
+
+            if (!questionInfo || !questionTitle || !optionsList) return;
+
+            questionInfo.textContent = `第 ${testIdx + 1} 题 / 共 ${MILU_QUESTIONS.length} 题`;
+            questionTitle.textContent = MILU_QUESTIONS[testIdx];
+            optionsList.innerHTML = '';
+
+            OPTIONS.forEach((op, i) => {
+                const el = document.createElement('div');
+                el.className = 'option-card';
+                el.innerHTML = `<input type="radio" name="answer" value="${op.score}" class="option-radio" id="op${i}"><label for="op${i}">${op.text}</label>`;
+                if (testAnswers[testIdx] && testAnswers[testIdx] === op.score) {
+                    el.classList.add('selected');
+                    el.querySelector('input').checked = true;
+                }
+                el.addEventListener('click', () => selectTestOption(el, op.score));
+                optionsList.appendChild(el);
+            });
+        }
+
+        function selectTestOption(el, score) {
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            testAnswers[testIdx] = score;
+            updateTestButtons();
+
+            // 自动跳转到下一题（除了最后一题）
+            setTimeout(() => {
+                if (testIdx < MILU_QUESTIONS.length - 1) {
+                    nextTestQuestion();
+                }
+            }, 100);
+        }
+
+        function updateTestProgress() {
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = (((testIdx + 1) / MILU_QUESTIONS.length) * 100) + '%';
+            }
+        }
+
+        function updateTestButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (prevBtn) prevBtn.disabled = testIdx === 0;
+            if (nextBtn) {
+                nextBtn.disabled = testAnswers[testIdx] == null;
+                nextBtn.textContent = testIdx === MILU_QUESTIONS.length - 1 ? '完成测试' : '下一题';
+            }
+        }
+
+        function prevTestQuestion() {
+            if (testIdx > 0) {
+                testIdx--;
+                renderTest();
+                updateTestProgress();
+                updateTestButtons();
+            }
+        }
+
+        function nextTestQuestion() {
+            if (testIdx < MILU_QUESTIONS.length - 1) {
+                testIdx++;
+                renderTest();
+                updateTestProgress();
+                updateTestButtons();
+            } else {
+                finishTest();
+            }
+        }
+
+        function finishTest() {
+            // 计算22个维度的平均分
+            const sums = new Array(LABELS.length).fill(0);
+            const counts = new Array(LABELS.length).fill(0);
+
+            testAnswers.forEach((s, i) => {
+                const k = i % LABELS.length;
+                sums[k] += (s || 0);
+                counts[k]++;
+            });
+
+            const scores = LABELS.map((name, i) => ({
+                name,
+                value: counts[i] ? (sums[i] / counts[i]) : 0
+            }));
+
+            const result = {
+                scores,
+                date: new Date().toISOString()
+            };
+
+            localStorage.setItem('miluPreferenceResult', JSON.stringify(result));
+            showResultPage();
+        }
+
+        function showResultPage() {
+            showPage('result-page');
+            renderResult();
+        }
+
+        // 结果页面功能
+        function renderResult() {
+            const data = JSON.parse(localStorage.getItem('miluPreferenceResult'));
+            if (!data) {
+                showPage('home-page');
+                return;
+            }
+
+            drawRadar('radar', data.scores);
+            renderAnalysis(data.scores);
+        }
+
+        function drawRadar(canvasId, pairs, standardScore = 0.8) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+
+            const dpr = window.devicePixelRatio || 1;
+            const W = 900, H = 650;
+            canvas.width = W * dpr;
+            canvas.height = H * dpr;
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+
+            const cx = W / 2, cy = H / 2 + 20;
+            const R = Math.min(W, H) * 0.28;
+            const labels = pairs.map(p => p.name);
+            const values = pairs.map(p => Math.max(0, Math.min(5, p.value)));
+            const n = labels.length;
+            const rings = 5;
+
+            ctx.clearRect(0, 0, W, H);
+
+            // 网格（淡灰色圆环）
+            ctx.strokeStyle = '#e6ecf2';
+            for (let r = 1; r <= rings; r++) {
+                ctx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const ang = (Math.PI * 2 * i) / n - Math.PI / 2;
+                    const rr = (R * r) / rings;
+                    const x = cx + Math.cos(ang) * rr;
+                    const y = cy + Math.sin(ang) * rr;
+                    if (i === 0)
+                        ctx.moveTo(x, y);
+                    else
+                        ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+
+            // 辐射轴线 + 标签
+            ctx.strokeStyle = 'rgba(26, 75, 140, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Microsoft YaHei';
+
+            for (let i = 0; i < n; i++) {
+                const ang = (Math.PI * 2 * i) / n - Math.PI / 2;
+                const x = cx + Math.cos(ang) * R;
+                const y = cy + Math.sin(ang) * R;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+
+                const lx = cx + Math.cos(ang) * (R + 32);
+                const ly = cy + Math.sin(ang) * (R + 32);
+                ctx.textAlign = Math.cos(ang) > 0.1 ? 'left' : (Math.cos(ang) < -0.1 ? 'right' : 'center');
+                ctx.textBaseline = Math.sin(ang) > 0.1 ? 'top' : (Math.sin(ang) < -0.1 ? 'bottom' : 'middle');
+                ctx.fillText(labels[i], lx, ly);
+            }
+
+            // 数据形状（蓝色区域）
+            const pathPoints = [];
+            for (let i = 0; i < n; i++) {
+                const ang = (Math.PI * 2 * i) / n - Math.PI / 2;
+                const ratio = values[i] / 5;
+                const r = R * ratio;
+                const x = cx + Math.cos(ang) * r;
+                const y = cy + Math.sin(ang) * r;
+                pathPoints.push({ x, y });
+            }
+
+            ctx.beginPath();
+            pathPoints.forEach((p, i) => {
+                if (i === 0)
+                    ctx.moveTo(p.x, p.y);
+                else
+                    ctx.lineTo(p.x, p.y);
+            });
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(26, 75, 140, 0.15)';
+            ctx.strokeStyle = '#1a4b8c';
+            ctx.lineWidth = 3;
+            ctx.fill();
+            ctx.stroke();
+
+            // 顶点圆点
+            ctx.fillStyle = '#1a4b8c';
+            for (const p of pathPoints) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // 中心参考点
+            const stdR = R * (standardScore / 5);
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#5a8fd8';
+            ctx.fill();
+
+            // 标题
+            ctx.fillStyle = '#000';
+            ctx.font = '18px Microsoft YaHei';
+            ctx.textAlign = 'center';
+            ctx.fillText('各维度得分', cx, 40);
+        }
+
+        function bandOf(v) {
+            if (v >= 4) return 'high';
+            if (v >= 2) return 'mid';
+            return 'low';
+        }
+
+        function bandName(v) {
+            if (v >= 4) return '高分';
+            if (v >= 2) return '中分';
+            return '低分';
+        }
+
+        function renderAnalysis(scores) {
+            const box = document.getElementById('analysis');
+            if (!box) return;
+
+            const to2 = v => (Math.round(v * 100) / 100).toFixed(2);
+            const html = scores.map(p => {
+                const v = Number(p.value) || 0;
+                const sc = `(${to2(v)}分)`;
+                const key = bandOf(v);
+                const txt = ANALYSIS[p.name]?.[key] || '';
+                const note = ANALYSIS[p.name]?.note ? `<div class="para note">${ANALYSIS[p.name].note}</div>` : '';
+                return `
+                    <div class="analysis-card">
+                        <h3>${p.name} <span class="score">${bandName(v)} ${sc}</span></h3>
+                        ${txt ? `<div class="para">${txt}</div>` : ''}
+                        ${note}
+                    </div>
+                `;
+            }).join('');
+            box.innerHTML = html;
+        }
+
+        // 页面保护功能 - 使用新建文本文档中的版本
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        document.addEventListener('keydown', function (e) {
+            // 禁用开发者工具快捷键
+            if (e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.key === 'u') ||
+                (e.ctrlKey && e.key === 's') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+                (e.ctrlKey && e.key === 'p') ||
+                (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 禁止选择文本
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁止拖拽
+        document.addEventListener('dragstart', function (e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // 事件绑定
+        document.addEventListener('DOMContentLoaded', function () {
+            // 检查是否有访问权限
+            if (checkAccess()) {
+                console.log("已有访问权限，24小时内有效");
+            }
+
+            // 首页按钮事件
+            const startBtn = document.getElementById('start-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', function () {
+                    startTest();
+                });
+            }
+
+            // 测试页面按钮事件
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', prevTestQuestion);
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', nextTestQuestion);
+            }
+
+            // 返回首页按钮
+            const backToHomeBtn = document.getElementById('back-to-home');
+            if (backToHomeBtn) {
+                backToHomeBtn.addEventListener('click', function () {
+                    showPage('home-page');
+                });
+            }
+
+            // 兑换码弹窗事件 - 使用新建文本文档中的版本
+            document.getElementById('modal-close').addEventListener('click', () => {
+                document.getElementById('code-modal').classList.remove('active');
+            });
+
+            document.getElementById('cancel-btn').addEventListener('click', () => {
+                document.getElementById('code-modal').classList.remove('active');
+            });
+
+            document.getElementById('confirm-btn').addEventListener('click', () => {
+                const codeInput = document.getElementById('code-input').value;
+                validateCode(codeInput);
+            });
+
+            // 按回车键确认兑换码
+            document.getElementById('code-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const codeInput = document.getElementById('code-input').value;
+                    validateCode(codeInput);
+                }
+            });
+
+            // 时间线动画效果
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            timelineItems.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(item);
+            });
+        });
+    </script>
+</body>
+
+</html>
